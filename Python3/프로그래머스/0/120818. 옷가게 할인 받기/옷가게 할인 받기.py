@@ -1,11 +1,7 @@
 def solution(price):
-    answer = 0
-    if price < 100000:
-        answer = price
-    elif 100000 <= price < 300000:
-        answer = int(price*0.95)
-    elif 300000 <= price < 500000:
-        answer = int(price*0.9)
-    elif 500000<= price:
-        answer = int(price*0.8)
+    answer = price
+    discount_rate = {100000:0.95, 300000:0.9, 500000:0.8}
+    for standard, rate in discount_rate.items():
+        if standard <= price:
+            answer = int(price*rate)
     return answer
