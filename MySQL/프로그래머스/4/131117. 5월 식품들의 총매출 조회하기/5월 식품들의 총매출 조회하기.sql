@@ -1,8 +1,6 @@
--- 코드를 입력하세요
-SELECT p.product_id, p.product_name, SUM(p.price*o.amount) TOTAL_SALES
-FROM food_product p JOIN (SELECT product_id, amount
-                          FROM food_order
-                          WHERE DATE_FORMAT(produce_date, '%Y-%m') = '2022-05') o
+SELECT p.product_id, p.product_name, SUM(price*amount) AS total_sales
+FROM food_product p JOIN food_order o
 ON p.product_id = o.product_id
+WHERE DATE_FORMAT(o.produce_date, '%Y-%m') = '2022-05'
 GROUP BY 1
 ORDER BY 3 DESC, 1;
