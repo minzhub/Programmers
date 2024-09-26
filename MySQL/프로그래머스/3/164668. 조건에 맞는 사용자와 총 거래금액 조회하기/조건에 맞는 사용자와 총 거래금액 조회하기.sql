@@ -1,9 +1,8 @@
--- 코드를 입력하세요
-SELECT b.writer_id AS USER_ID, u.nickname AS NICKNAME, SUM(b.price) AS TOTAL_SALES
-FROM used_goods_user u JOIN (SELECT writer_id, price
+SELECT u.user_id, u.nickname, b.sum
+FROM used_goods_user u JOIN (SELECT writer_id, SUM(price) as sum
                              FROM used_goods_board
-                             WHERE status = 'DONE') b
+                             WHERE status = 'DONE'
+                             GROUP BY 1
+                             HAVING sum >= 700000) b
 ON u.user_id = b.writer_id
-GROUP BY 1
-HAVING SUM(b.price)>=700000
-ORDER BY 3
+ORDER BY 3;
