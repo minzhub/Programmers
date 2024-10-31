@@ -1,24 +1,17 @@
-SELECT 
-    C.CAR_ID, 
-    C.CAR_TYPE, 
-    FLOOR(C.DAILY_FEE * 30 * (1 - DP.DISCOUNT_RATE / 100)) AS FEE
-FROM 
-    CAR_RENTAL_COMPANY_CAR C
-LEFT JOIN 
-    CAR_RENTAL_COMPANY_RENTAL_HISTORY RH 
-    ON C.CAR_ID = RH.CAR_ID 
-    AND RH.START_DATE <= '2022-11-30' 
-    AND RH.END_DATE >= '2022-11-01'
-JOIN 
-    CAR_RENTAL_COMPANY_DISCOUNT_PLAN DP 
-    ON C.CAR_TYPE = DP.CAR_TYPE 
-    AND DP.DURATION_TYPE = '30일 이상'
-WHERE 
-    C.CAR_TYPE IN ('세단', 'SUV')
-    AND RH.HISTORY_ID IS NULL  -- 2022년 11월 1일~30일 사이에 대여 이력이 없는 자동차만 선택
-HAVING 
-    FEE >= 500000 AND FEE < 2000000
-ORDER BY 
-    FEE DESC, 
-    C.CAR_TYPE ASC, 
-    C.CAR_ID DESC;
+WITH month_fee AS (
+    SELECT r.car_id, 
+           c.car_type, 
+           FLOOR(c.daily_fee * 30 * (1 - COALESCE(d.discount_rate, 0) / 100)) AS fee
+    FROM car_rental_company_rental_history r 
+    JOIN car_rental_company_car c ON r.car_id = c.car_id
+    LEFT JOIN car_rental_company_discount_plan d 
+           ON c.car_type = d.car_type AND d.duration_type = '30일 이상'
+    WHERE c.car_type IN ('세단', 'SUV')
+          AND r.start_date < '2022-11-30' 
+          AND r.end_date < '2022-11-01'
+)
+
+SELECT DISTINCT car_id, car_type, fee
+FROM month_fee
+WHERE fee >= 500000 AND fee < 2000000
+ORDER BY fee DESC, car_type ASC, car_id DESC;
