@@ -1,6 +1,6 @@
-SELECT i.food_type, i.rest_id, i.rest_name, i.favorites
-FROM rest_info i JOIN (SELECT rest_id, RANK() OVER(PARTITION BY food_type ORDER BY favorites DESC) rnk
-FROM rest_info) r
-ON i.rest_id = r.rest_id
-WHERE r.rnk = 1
-ORDER BY 1 DESC;
+SELECT food_type, rest_id, rest_name, favorites
+FROM (SELECT food_type, rest_id, rest_name, favorites,
+             RANK() OVER (PARTITION BY food_type ORDER BY favorites DESC) AS rnk
+      FROM rest_info) r
+WHERE rnk = 1
+ORDER BY food_type DESC;
