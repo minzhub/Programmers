@@ -1,3 +1,4 @@
-SELECT animal_type, coalesce(name, "No name") AS name, sex_upon_intake 
+-- 코드를 입력하세요
+SELECT animal_type, COALESCE(name, 'No name') AS name, sex_upon_intake
 FROM animal_ins
 ORDER BY animal_id;
