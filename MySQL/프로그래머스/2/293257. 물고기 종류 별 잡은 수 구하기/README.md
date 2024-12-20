@@ -12,11 +12,11 @@
 
 ### 채점결과
 
-합계: 100.0 / 100.0
+합계: 25.0 / 100.0
 
 ### 제출 일자
 
-2024년 09월 27일 15:13:42
+2024년 12월 20일 15:00:54
 
 ### 문제 설명
 
@@ -65,13 +65,10 @@
 <td>INTEGER</td>
 <td>FALSE</td>
 </tr>
-<tr>
-<td>FISH_NAME</td>
-<td>VARCHAR</td>
-<td>FALSE</td>
-</tr>
 </tbody>
       </table>
+<p>| FISH_NAME | VARCHAR | FALSE |</p>
+
 <hr>
 
 <h5>문제</h5>

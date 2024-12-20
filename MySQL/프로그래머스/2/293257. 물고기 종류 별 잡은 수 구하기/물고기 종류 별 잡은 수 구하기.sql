@@ -1,5 +1,11 @@
-SELECT COUNT(fish_name) AS fish_count, fish_name
-FROM fish_info f JOIN fish_name_info n
-ON f.fish_type = n.fish_type
-GROUP BY 2
-ORDER BY 1 DESC;
+-- 코드를 작성해주세요
+WITH fish AS (
+    SELECT fish_type, COUNT(*) AS fish_count
+    FROM fish_info
+    GROUP BY fish_type
+)
+
+SELECT f.fish_count, i.fish_name
+FROM fish f JOIN fish_name_info i
+ON f.fish_type = i.fish_type
+ORDER BY f.fish_count DESC;
