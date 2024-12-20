@@ -6,6 +6,6 @@ WITH fish AS (
 )
 
 SELECT f.fish_count, i.fish_name
-FROM fish f JOIN fish_name_info i
+FROM fish f LEFT JOIN fish_name_info i
 ON f.fish_type = i.fish_type
 ORDER BY f.fish_count DESC;
