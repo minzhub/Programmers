@@ -1,7 +1,7 @@
-SELECT DISTINCT h.car_id
-FROM car_rental_company_rental_history h JOIN (SELECT car_id
-                                               FROM car_rental_company_car c
-                                               WHERE car_type = '세단') c
-ON h.car_id = c.car_id
-WHERE MONTH(h.start_date) = '10'
-ORDER BY 1 DESC;
+-- 코드를 입력하세요
+SELECT DISTINCT c.car_id
+FROM car_rental_company_car c JOIN car_rental_company_rental_history h
+ON c.car_id = h.car_id
+WHERE c.car_type = '세단'
+      AND MONTH(h.start_date) = '10'
+ORDER BY c.car_id DESC;
