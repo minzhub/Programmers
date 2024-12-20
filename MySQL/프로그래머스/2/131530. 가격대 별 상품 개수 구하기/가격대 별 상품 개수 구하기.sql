@@ -1,4 +1,6 @@
-SELECT (FLOOR(price / 10000) * 10000) AS price_group, COUNT(*)
+-- 코드를 입력하세요
+SELECT TRUNCATE(price, -4) AS price_group,
+       COUNT(*) AS products
 FROM product
-GROUP BY 1
-ORDER BY 1;
+GROUP BY price_group
+ORDER BY price_group;
