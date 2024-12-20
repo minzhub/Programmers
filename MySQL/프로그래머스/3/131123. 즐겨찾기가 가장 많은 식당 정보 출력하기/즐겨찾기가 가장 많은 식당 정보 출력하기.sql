@@ -1,7 +1,7 @@
-SELECT r1.food_type, rest_id, rest_name, favorites
-FROM rest_info r1 JOIN (SELECT food_type, MAX(favorites) AS mx
-                        FROM rest_info
-                        GROUP BY food_type) r2
-ON r1.food_type = r2.food_type
-   AND r1.favorites = r2.mx
+-- 코드를 입력하세요
+SELECT food_type, rest_id, rest_name, favorites
+FROM (SELECT food_type, rest_id, rest_name, favorites,
+             RANK() OVER (PARTITION BY food_type ORDER BY favorites DESC) AS rnk
+      FROM rest_info) rest_rnk
+WHERE rnk = 1
 ORDER BY food_type DESC;
