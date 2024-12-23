@@ -16,7 +16,7 @@
 
 ### 제출 일자
 
-2024년 09월 27일 15:41:54
+2024년 12월 23일 22:22:11
 
 ### 문제 설명
 
@@ -265,22 +265,11 @@
 <th>AVG_SAL</th>
 </tr>
 </thead>
-        <tbody><tr>
-<td>D0007</td>
-<td>Marketing</td>
-<td>54666667</td>
-</tr>
-<tr>
-<td>D0006</td>
-<td>Purchasing</td>
-<td>54250000</td>
-</tr>
-<tr>
-<td>D0005</td>
-<td>Finance</td>
-<td>52000000</td>
-</tr>
-</tbody>
+        <tbody></tbody>
       </table>
+<p>| D0007 | Marketing | 54666667 |<br>
+| D0006 | Purchasing | 54250000 |<br>
+| D0005 | Finance | 52000000 |</p>
+
 
 > 출처: 프로그래머스 코딩 테스트 연습, https://school.programmers.co.kr/learn/challenges
