@@ -1,4 +1,6 @@
-SELECT CONCAT(QUARTER(differentiation_date), 'Q') AS quarter, COUNT(id) AS ecoli_count
+-- 코드를 작성해주세요
+SELECT CONCAT(QUARTER(differentiation_date), 'Q') AS quarter,
+       COUNT(*) AS ecoli_count
 FROM ecoli_data
-GROUP BY 1
-ORDER BY 1;
+GROUP BY quarter
+ORDER BY quarter;
