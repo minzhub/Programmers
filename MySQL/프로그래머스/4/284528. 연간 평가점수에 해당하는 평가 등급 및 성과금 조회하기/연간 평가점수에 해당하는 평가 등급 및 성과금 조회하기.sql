@@ -1,19 +1,23 @@
-SELECT E.EMP_NO, 
-       E.EMP_NAME, 
-       CASE 
-           WHEN AVG(G.SCORE) >= 96 THEN 'S'
-           WHEN AVG(G.SCORE) >= 90 THEN 'A'
-           WHEN AVG(G.SCORE) >= 80 THEN 'B'
-           ELSE 'C'
-       END AS GRADE,
-       CASE 
-           WHEN AVG(G.SCORE) >= 96 THEN E.SAL * 0.20
-           WHEN AVG(G.SCORE) >= 90 THEN E.SAL * 0.15
-           WHEN AVG(G.SCORE) >= 80 THEN E.SAL * 0.10
+-- 코드를 작성해주세요
+WITH gr AS (
+    SELECT emp_no,
+           CASE
+               WHEN AVG(score) >= 96 THEN 'S'
+               WHEN AVG(score) >= 90 THEN 'A'
+               WHEN AVG(score) >= 80 THEN 'B'
+               ELSE 'C'
+           END AS grade
+    FROM hr_grade
+    GROUP BY emp_no
+)
+
+SELECT g.emp_no, h.emp_name, g.grade,
+       CASE g.grade
+           WHEN 'S' THEN h.sal * 0.2
+           WHEN 'A' THEN h.sal * 0.15
+           WHEN 'B' THEN h.sal * 0.1
            ELSE 0
-       END AS BONUS
-FROM HR_EMPLOYEES E
-JOIN HR_GRADE G ON E.EMP_NO = G.EMP_NO
-WHERE G.YEAR = 2022
-GROUP BY E.EMP_NO, E.EMP_NAME, E.SAL
-ORDER BY E.EMP_NO ASC;
+       END AS bonus
+FROM gr g JOIN hr_employees h
+ON g.emp_no = h.emp_no
+ORDER BY g.emp_no;
