@@ -1,12 +1,31 @@
-SELECT cc.car_id, cc.car_type, FLOOR(daily_fee * 30 * (1 - discount_rate / 100)) AS fee
-FROM car_rental_company_car cc
-LEFT JOIN car_rental_company_rental_history rh
-ON cc.car_id = rh.car_id AND start_date <= '2022-11-30' AND end_date >= '2022-11-01'
-JOIN car_rental_company_discount_plan dp
-ON cc.car_type = dp.car_type
-AND duration_type = '30일 이상'
-WHERE cc.car_type IN ('세단', 'SUV')
-      AND history_id IS NULL
-GROUP BY 1
-HAVING fee >= 500000 AND fee < 2000000
-ORDER BY 3 DESC, 2, 1 DESC;
+WITH AVAILABLE_CARS AS (
+    -- 2022년 11월 1일부터 11월 30일까지 대여 이력이 없는 자동차 목록 조회
+    SELECT C.CAR_ID, C.CAR_TYPE, C.DAILY_FEE
+    FROM CAR_RENTAL_COMPANY_CAR C
+    LEFT JOIN CAR_RENTAL_COMPANY_RENTAL_HISTORY R
+        ON C.CAR_ID = R.CAR_ID
+        AND (
+            R.START_DATE <= '2022-11-30' 
+            AND R.END_DATE >= '2022-11-01'
+        )
+    WHERE C.CAR_TYPE IN ('세단', 'SUV') 
+        AND R.HISTORY_ID IS NULL
+),
+DISCOUNTED_FEE AS (
+    -- 각 자동차의 30일 대여 금액을 계산하고, 할인율을 적용
+    SELECT 
+        A.CAR_ID, 
+        A.CAR_TYPE, 
+        A.DAILY_FEE,
+        30 * A.DAILY_FEE AS BASE_FEE,
+        30 * A.DAILY_FEE * (1 - COALESCE(D.DISCOUNT_RATE, 0) / 100.0) AS FEE
+    FROM AVAILABLE_CARS A
+    LEFT JOIN CAR_RENTAL_COMPANY_DISCOUNT_PLAN D
+        ON A.CAR_TYPE = D.CAR_TYPE
+        AND D.DURATION_TYPE = '30일 이상'
+)
+-- 조건에 맞는 자동차 ID, 자동차 종류, 대여 금액 조회 및 정렬
+SELECT CAR_ID, CAR_TYPE, ROUND(FEE) AS FEE
+FROM DISCOUNTED_FEE
+WHERE FEE BETWEEN 500000 AND 1999999
+ORDER BY FEE DESC, CAR_TYPE ASC, CAR_ID DESC;
